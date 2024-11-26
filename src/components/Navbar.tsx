@@ -18,9 +18,15 @@ import MenuIcon from '@mui/icons-material/Menu';
 const pages = [
   { name: 'Home', path: '/' },
   { name: 'About', path: '/about' },
-  { name: 'Contact', path: '/contact' }
+  { name: 'Contact', path: '/contact' },
+  { name: 'Dashboard', path: '/dashboard' }
 ];
-const settings = ['Profile', 'Dashboard', 'Settings', 'Logout'];
+const settings = [
+  { name: 'Profile', path: '/profile' },
+  { name: 'Dashboard', path: '/dashboard' },
+  { name: 'Settings', path: '/settings' },
+  { name: 'Logout', path: '/logout' }
+];
 
 function Navbar() {
   const navigate = useNavigate();
@@ -167,8 +173,8 @@ function Navbar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.name} onClick={() => navigate(setting.path)}>
+                  <Typography textAlign="center">{setting.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
