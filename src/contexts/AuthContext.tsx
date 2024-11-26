@@ -11,7 +11,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, rememberMe: boolean) => Promise<void>;
   register: (userData: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Check if user is logged in on mount
     const checkAuth = async () => {
       try {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
         if (token) {
           // Verify token with backend
           const response = await fetch('/api/auth/verify', {
@@ -57,6 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setUser(userData);
           } else {
             localStorage.removeItem('authToken');
+            sessionStorage.removeItem('authToken');
           }
         }
       } catch (error) {
@@ -69,7 +70,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     checkAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, rememberMe: boolean) => {
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -85,7 +86,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       const { token, user: userData } = await response.json();
-      localStorage.setItem('authToken', token);
+      
+      // Store token based on remember me preference
+      if (rememberMe) {
+        localStorage.setItem('authToken', token);
+        sessionStorage.removeItem('authToken');
+      } else {
+        sessionStorage.setItem('authToken', token);
+        localStorage.removeItem('authToken');
+      }
+      
       setUser(userData);
       navigate('/dashboard');
     } catch (error) {
@@ -109,7 +119,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       const { token, user: newUser } = await response.json();
-      localStorage.setItem('authToken', token);
+      // Store token in session storage by default for new registrations
+      sessionStorage.setItem('authToken', token);
+      localStorage.removeItem('authToken');
       setUser(newUser);
       navigate('/dashboard');
     } catch (error) {
@@ -119,17 +131,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try {
-      // Call logout endpoint if needed
-      await fetch('/api/auth/logout', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-        }
-      });
+      const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+      if (token) {
+        await fetch('/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      }
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
       localStorage.removeItem('authToken');
+      sessionStorage.removeItem('authToken');
       setUser(null);
       navigate('/login');
     }

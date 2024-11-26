@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Box,
@@ -12,11 +12,13 @@ import {
   Alert,
   Grid,
   CircularProgress,
+  LinearProgress,
 } from '@mui/material';
 import { Link as RouterLink, Navigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import { useAuth } from '../contexts/AuthContext';
+import { validatePassword, getPasswordStrengthColor } from '../utils/passwordStrength';
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -28,11 +30,23 @@ const Register = () => {
     password: '',
     confirmPassword: '',
   });
+  const [passwordStrength, setPasswordStrength] = useState({
+    score: 0,
+    feedback: [''],
+    isStrong: false,
+  });
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { register, isAuthenticated } = useAuth();
 
-  // Redirect if already authenticated
+  useEffect(() => {
+    if (formData.password) {
+      setPasswordStrength(validatePassword(formData.password));
+    } else {
+      setPasswordStrength({ score: 0, feedback: [''], isStrong: false });
+    }
+  }, [formData.password]);
+
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
@@ -46,12 +60,12 @@ const Register = () => {
   };
 
   const validateForm = () => {
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+    if (!passwordStrength.isStrong) {
+      setError('Please choose a stronger password');
       return false;
     }
-    if (formData.password.length < 8) {
-      setError('Password must be at least 8 characters long');
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
       return false;
     }
     return true;
@@ -169,7 +183,15 @@ const Register = () => {
                   value={formData.password}
                   onChange={handleChange}
                   disabled={isSubmitting}
-                  helperText="Password must be at least 8 characters long"
+                  error={formData.password.length > 0 && !passwordStrength.isStrong}
+                  helperText={
+                    formData.password && 
+                    passwordStrength.feedback.map((feedback, index) => (
+                      <span key={index} style={{ display: 'block' }}>
+                        {feedback}
+                      </span>
+                    ))
+                  }
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -185,6 +207,23 @@ const Register = () => {
                     ),
                   }}
                 />
+                {formData.password && (
+                  <Box sx={{ width: '100%', mt: 1 }}>
+                    <LinearProgress
+                      variant="determinate"
+                      value={(passwordStrength.score / 5) * 100}
+                      sx={{
+                        height: 8,
+                        borderRadius: 4,
+                        backgroundColor: 'rgba(0,0,0,0.1)',
+                        '& .MuiLinearProgress-bar': {
+                          backgroundColor: getPasswordStrengthColor(passwordStrength.score),
+                          borderRadius: 4,
+                        },
+                      }}
+                    />
+                  </Box>
+                )}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -197,6 +236,16 @@ const Register = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   disabled={isSubmitting}
+                  error={
+                    formData.confirmPassword.length > 0 &&
+                    formData.password !== formData.confirmPassword
+                  }
+                  helperText={
+                    formData.confirmPassword.length > 0 &&
+                    formData.password !== formData.confirmPassword
+                      ? 'Passwords do not match'
+                      : ''
+                  }
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -219,7 +268,7 @@ const Register = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, height: 44 }}
-              disabled={isSubmitting}
+              disabled={isSubmitting || !passwordStrength.isStrong}
             >
               {isSubmitting ? (
                 <CircularProgress size={24} color="inherit" />

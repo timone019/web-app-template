@@ -11,6 +11,8 @@ import {
   IconButton,
   Alert,
   CircularProgress,
+  FormControlLabel,
+  Checkbox,
 } from '@mui/material';
 import { Link as RouterLink, Navigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -23,6 +25,7 @@ const Login = () => {
     email: '',
     password: '',
   });
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login, isAuthenticated } = useAuth();
@@ -46,7 +49,7 @@ const Login = () => {
     setIsSubmitting(true);
     
     try {
-      await login(formData.email, formData.password);
+      await login(formData.email, formData.password, rememberMe);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to login. Please check your credentials.');
     } finally {
@@ -132,6 +135,18 @@ const Login = () => {
                   </InputAdornment>
                 ),
               }}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="remember"
+                  color="primary"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  disabled={isSubmitting}
+                />
+              }
+              label="Remember me"
             />
             <Button
               type="submit"
