@@ -1,7 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Box, CssBaseline, ThemeProvider as MuiThemeProvider } from '@mui/material';
 import { CustomThemeProvider, useCustomTheme } from './contexts/ThemeContext';
+import { AuthProvider } from './contexts/AuthContext';
 import { getTheme } from './theme';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -10,16 +11,21 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
-// Layout component for pages with footer
-const WithFooterLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-    <Box sx={{ flex: 1 }}>{children}</Box>
-    <Footer />
-  </Box>
-);
+const App = () => {
+  return (
+    <Router>
+      <AuthProvider>
+        <CustomThemeProvider>
+          <AppContent />
+        </CustomThemeProvider>
+      </AuthProvider>
+    </Router>
+  );
+};
 
-// App content with theme
 const AppContent = () => {
   const { darkMode } = useCustomTheme();
   const theme = getTheme(darkMode ? 'dark' : 'light');
@@ -27,51 +33,53 @@ const AppContent = () => {
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          <Navbar />
-          <Box component="main" sx={{ flex: 1 }}>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <WithFooterLayout>
+      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <Navbar />
+        <Box component="main" sx={{ flex: 1 }}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1 }}>
                     <Home />
-                  </WithFooterLayout>
-                }
-              />
-              <Route
-                path="/about"
-                element={
-                  <WithFooterLayout>
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1 }}>
                     <About />
-                  </WithFooterLayout>
-                }
-              />
-              <Route
-                path="/contact"
-                element={
-                  <WithFooterLayout>
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
+            <Route
+              path="/contact"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1 }}>
                     <Contact />
-                  </WithFooterLayout>
-                }
-              />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/profile" element={<Profile />} />
-            </Routes>
-          </Box>
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </Box>
-      </Router>
+      </Box>
     </MuiThemeProvider>
   );
 };
-
-function App() {
-  return (
-    <CustomThemeProvider>
-      <AppContent />
-    </CustomThemeProvider>
-  );
-}
 
 export default App;

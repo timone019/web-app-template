@@ -12,28 +12,50 @@ import {
   Tooltip,
   MenuItem,
   useTheme,
+  Divider,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
   Brightness4 as DarkModeIcon,
   Brightness7 as LightModeIcon,
+  Login as LoginIcon,
 } from '@mui/icons-material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useCustomTheme } from '../contexts/ThemeContext';
 
-const pages = [
+interface NavPage {
+  title: string;
+  path: string;
+}
+
+interface NavSetting {
+  title?: string;
+  path?: string;
+  icon?: React.ReactNode;
+  divider?: boolean;
+}
+
+const pages: NavPage[] = [
   { title: 'Home', path: '/' },
   { title: 'About', path: '/about' },
   { title: 'Contact', path: '/contact' },
   { title: 'Dashboard', path: '/dashboard' },
 ];
-const settings = ['Profile', 'Account', 'Logout'];
+
+const settings: NavSetting[] = [
+  { title: 'Profile', path: '/profile' },
+  { title: 'Account', path: '/account' },
+  { title: 'Dashboard', path: '/dashboard' },
+  { divider: true },
+  { title: 'Login', path: '/login', icon: <LoginIcon /> },
+];
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const { darkMode, toggleDarkMode } = useCustomTheme();
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -48,6 +70,11 @@ const Navbar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleMenuItemClick = (path: string) => {
+    navigate(path);
+    handleCloseUserMenu();
   };
 
   return (
@@ -144,6 +171,23 @@ const Navbar = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Button
+              component={RouterLink}
+              to="/register"
+              variant="outlined"
+              color="inherit"
+              sx={{
+                display: { xs: 'none', md: 'flex' },
+                borderRadius: 2,
+                textTransform: 'none',
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                },
+              }}
+            >
+              Sign Up
+            </Button>
+            
             <IconButton
               onClick={toggleDarkMode}
               color="inherit"
@@ -176,11 +220,23 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              {settings.map((setting) => 
+                setting.divider ? (
+                  <Divider key="divider" />
+                ) : (
+                  <MenuItem 
+                    key={setting.title}
+                    onClick={() => setting.path && handleMenuItemClick(setting.path)}
+                    sx={{ 
+                      gap: 1,
+                      minWidth: 150,
+                    }}
+                  >
+                    {setting.icon}
+                    <Typography textAlign="center">{setting.title}</Typography>
+                  </MenuItem>
+                )
+              )}
             </Menu>
           </Box>
         </Toolbar>
