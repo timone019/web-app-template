@@ -1,9 +1,15 @@
 import React from 'react';
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, Paper, Typography, Box, Button } from '@mui/material';
 import StatCard from '../components/dashboard/StatCard';
 import ActivityTimeline, { Activity } from '../components/dashboard/ActivityTimeline';
 import PerformanceChart from '../components/dashboard/PerformanceChart';
-import { Person, Assignment, AccessTime, TrendingUp } from '@mui/icons-material';
+import {
+  Person,
+  Assignment,
+  AccessTime,
+  TrendingUp,
+  ArrowForward as ArrowForwardIcon,
+} from '@mui/icons-material';
 
 const Dashboard: React.FC = () => {
   const chartData = [
@@ -44,8 +50,25 @@ const Dashboard: React.FC = () => {
     },
   ];
 
+  const quickActions = [
+    { title: 'Create New Project', description: 'Start a new project from scratch' },
+    { title: 'Invite Team Member', description: 'Add new members to your team' },
+    { title: 'Schedule Meeting', description: 'Set up a meeting with your team' },
+    { title: 'Generate Report', description: 'Create a new performance report' },
+  ];
+
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      {/* Welcome Message */}
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Welcome back, User!
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Here's what's happening with your projects today.
+        </Typography>
+      </Box>
+
       <Grid container spacing={3}>
         {/* Stats Row */}
         <Grid item xs={12} sm={6} md={3}>
@@ -79,6 +102,51 @@ const Dashboard: React.FC = () => {
             icon={<TrendingUp />}
             color="#F44336"
           />
+        </Grid>
+
+        {/* Quick Actions */}
+        <Grid item xs={12}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Quick Actions
+          </Typography>
+          <Grid container spacing={2}>
+            {quickActions.map((action, index) => (
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transition: 'transform 0.2s, box-shadow 0.2s',
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      boxShadow: 4,
+                      cursor: 'pointer',
+                    },
+                  }}
+                >
+                  <Typography variant="subtitle1" gutterBottom>
+                    {action.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: 2, flex: 1 }}
+                  >
+                    {action.description}
+                  </Typography>
+                  <Button
+                    endIcon={<ArrowForwardIcon />}
+                    size="small"
+                    sx={{ alignSelf: 'flex-start' }}
+                  >
+                    Get Started
+                  </Button>
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
 
         {/* Chart and Timeline Row */}

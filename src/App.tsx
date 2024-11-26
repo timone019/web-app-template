@@ -1,44 +1,63 @@
 import React from 'react';
-import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Box, CssBaseline, ThemeProvider } from '@mui/material';
+import { theme } from './theme';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1976d2',
-    },
-    secondary: {
-      main: '#dc004e',
-    },
-  },
-  typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-  },
-});
+// Layout component for pages with footer
+const WithFooterLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <Box sx={{ flex: 1 }}>{children}</Box>
+    <Footer />
+  </Box>
+);
 
 function App() {
   return (
-    <Router>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <div className="App">
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile" element={<Profile />} />
-          </Routes>
-        </div>
-      </ThemeProvider>
-    </Router>
+          <Box component="main" sx={{ flex: 1 }}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <WithFooterLayout>
+                    <Home />
+                  </WithFooterLayout>
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <WithFooterLayout>
+                    <About />
+                  </WithFooterLayout>
+                }
+              />
+              <Route
+                path="/contact"
+                element={
+                  <WithFooterLayout>
+                    <Contact />
+                  </WithFooterLayout>
+                }
+              />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />} />
+            </Routes>
+          </Box>
+        </Box>
+      </Router>
+    </ThemeProvider>
   );
 }
 
