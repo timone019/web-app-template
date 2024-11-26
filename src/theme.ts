@@ -1,7 +1,9 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeOptions } from '@mui/material/styles';
+import { PaletteMode } from '@mui/material';
 
-export const theme = createTheme({
+const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
   palette: {
+    mode,
     primary: {
       main: '#1976d2',
       light: '#42a5f5',
@@ -13,8 +15,12 @@ export const theme = createTheme({
       dark: '#c51162',
     },
     background: {
-      default: '#f5f5f5',
-      paper: '#ffffff',
+      default: mode === 'light' ? '#f5f5f5' : '#121212',
+      paper: mode === 'light' ? '#ffffff' : '#1e1e1e',
+    },
+    text: {
+      primary: mode === 'light' ? 'rgba(0, 0, 0, 0.87)' : 'rgba(255, 255, 255, 0.87)',
+      secondary: mode === 'light' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)',
     },
   },
   typography: {
@@ -52,8 +58,21 @@ export const theme = createTheme({
         },
       },
     },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          background: mode === 'light' ? '#ffffff' : '#1e1e1e',
+          color: mode === 'light' ? 'rgba(0, 0, 0, 0.87)' : 'rgba(255, 255, 255, 0.87)',
+          boxShadow: mode === 'light' 
+            ? '0 1px 3px rgba(0,0,0,0.12)' 
+            : '0 1px 3px rgba(0,0,0,0.3)',
+        },
+      },
+    },
   },
   shape: {
     borderRadius: 8,
   },
 });
+
+export const getTheme = (mode: PaletteMode) => createTheme(getDesignTokens(mode));

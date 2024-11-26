@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Box, CssBaseline, ThemeProvider } from '@mui/material';
-import { theme } from './theme';
+import { Box, CssBaseline, ThemeProvider as MuiThemeProvider } from '@mui/material';
+import { CustomThemeProvider, useCustomTheme } from './contexts/ThemeContext';
+import { getTheme } from './theme';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -18,9 +19,13 @@ const WithFooterLayout: React.FC<{ children: React.ReactNode }> = ({ children })
   </Box>
 );
 
-function App() {
+// App content with theme
+const AppContent = () => {
+  const { darkMode } = useCustomTheme();
+  const theme = getTheme(darkMode ? 'dark' : 'light');
+
   return (
-    <ThemeProvider theme={theme}>
+    <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
         <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -57,7 +62,15 @@ function App() {
           </Box>
         </Box>
       </Router>
-    </ThemeProvider>
+    </MuiThemeProvider>
+  );
+};
+
+function App() {
+  return (
+    <CustomThemeProvider>
+      <AppContent />
+    </CustomThemeProvider>
   );
 }
 

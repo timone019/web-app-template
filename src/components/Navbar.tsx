@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Box,
@@ -12,26 +11,29 @@ import {
   Button,
   Tooltip,
   MenuItem,
+  useTheme,
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import {
+  Menu as MenuIcon,
+  Brightness4 as DarkModeIcon,
+  Brightness7 as LightModeIcon,
+} from '@mui/icons-material';
+import { Link as RouterLink } from 'react-router-dom';
+import { useCustomTheme } from '../contexts/ThemeContext';
 
 const pages = [
-  { name: 'Home', path: '/' },
-  { name: 'About', path: '/about' },
-  { name: 'Contact', path: '/contact' },
-  { name: 'Dashboard', path: '/dashboard' }
+  { title: 'Home', path: '/' },
+  { title: 'About', path: '/about' },
+  { title: 'Contact', path: '/contact' },
+  { title: 'Dashboard', path: '/dashboard' },
 ];
-const settings = [
-  { name: 'Profile', path: '/profile' },
-  { name: 'Dashboard', path: '/dashboard' },
-  { name: 'Settings', path: '/settings' },
-  { name: 'Logout', path: '/logout' }
-];
+const settings = ['Profile', 'Account', 'Logout'];
 
-function Navbar() {
-  const navigate = useNavigate();
+const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const { darkMode, toggleDarkMode } = useCustomTheme();
+  const theme = useTheme();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -48,40 +50,30 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
-  const handleNavigation = (path: string) => {
-    navigate(path);
-    handleCloseNavMenu();
-  };
-
   return (
-    <AppBar position="static">
+    <AppBar position="sticky" elevation={1}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* Logo for larger screens */}
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            onClick={() => navigate('/')}
+            component={RouterLink}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
               fontWeight: 700,
-              letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
-              cursor: 'pointer',
             }}
           >
-            {process.env.REACT_APP_NAME || 'WEB APP'}
+            LOGO
           </Typography>
 
-          {/* Mobile menu */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
-              aria-label="menu"
+              aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
@@ -108,52 +100,64 @@ function Navbar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.name} onClick={() => handleNavigation(page.path)}>
-                  <Typography textAlign="center">{page.name}</Typography>
+                <MenuItem
+                  key={page.title}
+                  onClick={handleCloseNavMenu}
+                  component={RouterLink}
+                  to={page.path}
+                >
+                  <Typography textAlign="center">{page.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-
-          {/* Logo for mobile screens */}
+          
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            onClick={() => navigate('/')}
+            component={RouterLink}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
-              fontFamily: 'monospace',
               fontWeight: 700,
-              letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
-              cursor: 'pointer',
             }}
           >
-            {process.env.REACT_APP_NAME || 'WEB APP'}
+            LOGO
           </Typography>
-
-          {/* Desktop menu */}
+          
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page.name}
-                onClick={() => handleNavigation(page.path)}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                key={page.title}
+                component={RouterLink}
+                to={page.path}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: 'inherit', display: 'block' }}
               >
-                {page.name}
+                {page.title}
               </Button>
             ))}
           </Box>
 
-          {/* User menu */}
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
+            <IconButton
+              onClick={toggleDarkMode}
+              color="inherit"
+              sx={{
+                transition: 'transform 0.3s',
+                '&:hover': { transform: 'rotate(90deg)' },
+              }}
+            >
+              {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+            </IconButton>
+            
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User" />
+                <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -173,8 +177,8 @@ function Navbar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting.name} onClick={() => navigate(setting.path)}>
-                  <Typography textAlign="center">{setting.name}</Typography>
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -183,6 +187,6 @@ function Navbar() {
       </Container>
     </AppBar>
   );
-}
+};
 
 export default Navbar;
