@@ -9,15 +9,18 @@ import {
   Paper,
   InputAdornment,
   IconButton,
-  Alert,
-  CircularProgress,
   FormControlLabel,
   Checkbox,
+  Alert,
+  Divider,
+  Grid,
+  CircularProgress,
 } from '@mui/material';
 import { Link as RouterLink, Navigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAuth } from '../contexts/AuthContext';
+import { GoogleLogin } from '@react-oauth/google';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -28,7 +31,7 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, googleLogin } = useAuth();
 
   // Redirect if already authenticated
   if (isAuthenticated) {
@@ -91,11 +94,11 @@ const Login = () => {
             Sign in
           </Typography>
           {error && (
-            <Alert severity="error" sx={{ width: '100%', mt: 2 }}>
+            <Alert severity="error" sx={{ width: '100%', mb: 2 }}>
               {error}
             </Alert>
           )}
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, width: '100%' }}>
+          <form onSubmit={handleSubmit} style={{ width: '100%' }}>
             <TextField
               margin="normal"
               required
@@ -161,14 +164,37 @@ const Login = () => {
                 'Sign In'
               )}
             </Button>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Link component={RouterLink} to="/forgot-password" variant="body2">
-                Forgot password?
-              </Link>
-              <Link component={RouterLink} to="/register" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
+          </form>
+
+          <Box sx={{ width: '100%', mt: 2 }}>
+            <Divider sx={{ my: 2 }}>OR</Divider>
+            
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+              <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  if (credentialResponse.credential) {
+                    setIsSubmitting(true);
+                    googleLogin(credentialResponse.credential)
+                      .catch((error) => {
+                        setError(error.message);
+                      })
+                      .finally(() => {
+                        setIsSubmitting(false);
+                      });
+                  }
+                }}
+                onError={() => {
+                  setError('Google login failed. Please try again.');
+                }}
+                useOneTap
+              />
             </Box>
+          </Box>
+
+          <Box sx={{ mt: 2 }}>
+            <Link component={RouterLink} to="/register" variant="body2">
+              {"Don't have an account? Sign Up"}
+            </Link>
           </Box>
         </Paper>
       </Box>

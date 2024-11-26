@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 interface User {
   id: string;
@@ -14,6 +15,7 @@ interface AuthContextType {
   login: (email: string, password: string, rememberMe: boolean) => Promise<void>;
   register: (userData: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
+  googleLogin: (credential: string) => Promise<void>;
   isAuthenticated: boolean;
 }
 
@@ -150,19 +152,50 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const googleLogin = async (credential: string) => {
+    try {
+      const response = await fetch('/api/auth/google', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ credential }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Google login failed');
+      }
+
+      const { token, user: userData } = await response.json();
+      
+      // Store token in localStorage as Google Sign-In is typically "remember me" by default
+      localStorage.setItem('authToken', token);
+      sessionStorage.removeItem('authToken');
+      
+      setUser(userData);
+      navigate('/dashboard');
+    } catch (error) {
+      throw error instanceof Error ? error : new Error('Google login failed');
+    }
+  };
+
   return (
-    <AuthContext.Provider 
-      value={{ 
-        user, 
-        loading, 
-        login, 
-        register, 
-        logout,
-        isAuthenticated: !!user 
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ''}>
+      <AuthContext.Provider
+        value={{
+          user,
+          loading,
+          login,
+          register,
+          logout,
+          googleLogin,
+          isAuthenticated: !!user,
+        }}
+      >
+        {children}
+      </AuthContext.Provider>
+    </GoogleOAuthProvider>
   );
 };
 
