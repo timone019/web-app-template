@@ -27,6 +27,8 @@ import Cookie from './pages/Cookie';
 import Security from './pages/Security';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
+import Careers from './pages/Careers';
+import JobPosting from './pages/JobPosting';
 
 const App = () => {
   return (
@@ -217,6 +219,28 @@ const AppContent = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                   <Box sx={{ flex: 1, mt: 8 }}>
                     <BlogPost />
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
+            <Route
+              path="/careers"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1 }}>
+                    <Careers />
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
+            <Route
+              path="/careers/:slug"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1, mt: 8 }}>
+                    <JobPosting />
                   </Box>
                   <Footer />
                 </Box>

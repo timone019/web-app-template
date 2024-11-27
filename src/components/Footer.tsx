@@ -26,7 +26,7 @@ const Footer: React.FC = () => {
     ],
     company: [
       { name: 'About Us', href: '/about' },
-      { name: 'Careers', href: '#' },
+      { name: 'Careers', path: '/careers' },
       { name: 'Contact', href: '/contact' },
       { name: 'Blog', path: '/blog' },
     ],
