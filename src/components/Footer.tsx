@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Container, Grid, Typography, Link, IconButton } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Facebook as FacebookIcon,
   Twitter as TwitterIcon,
@@ -14,7 +15,7 @@ const Footer: React.FC = () => {
     product: [
       { name: 'Features', href: '#' },
       { name: 'Pricing', href: '/pricing' },
-      { name: 'Resources', href: '#' },
+      { name: 'Resources', path: '/resources' },
       { name: 'Roadmap', href: '#' },
     ],
     company: [
@@ -58,9 +59,36 @@ const Footer: React.FC = () => {
             <Box>
               {footerLinks.product.map((link) => (
                 <Box key={link.name} sx={{ py: 0.5 }}>
-                  <Link href={link.href} variant="body2" color="text.secondary">
-                    {link.name}
-                  </Link>
+                  {link.path ? (
+                    <Link
+                      component={RouterLink}
+                      to={link.path}
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        textDecoration: 'none',
+                        '&:hover': {
+                          textDecoration: 'underline',
+                        },
+                      }}
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        textDecoration: 'none',
+                        '&:hover': {
+                          textDecoration: 'underline',
+                        },
+                      }}
+                    >
+                      {link.name}
+                    </Link>
+                  )}
                 </Box>
               ))}
             </Box>
@@ -74,7 +102,17 @@ const Footer: React.FC = () => {
             <Box>
               {footerLinks.company.map((link) => (
                 <Box key={link.name} sx={{ py: 0.5 }}>
-                  <Link href={link.href} variant="body2" color="text.secondary">
+                  <Link
+                    href={link.href}
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      textDecoration: 'none',
+                      '&:hover': {
+                        textDecoration: 'underline',
+                      },
+                    }}
+                  >
                     {link.name}
                   </Link>
                 </Box>
@@ -90,7 +128,17 @@ const Footer: React.FC = () => {
             <Box>
               {footerLinks.legal.map((link) => (
                 <Box key={link.name} sx={{ py: 0.5 }}>
-                  <Link href={link.href} variant="body2" color="text.secondary">
+                  <Link
+                    href={link.href}
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      textDecoration: 'none',
+                      '&:hover': {
+                        textDecoration: 'underline',
+                      },
+                    }}
+                  >
                     {link.name}
                   </Link>
                 </Box>
