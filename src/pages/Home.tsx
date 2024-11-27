@@ -1,6 +1,7 @@
 import React from 'react';
-import { Container, Typography, Box, Button, Grid, Paper } from '@mui/material';
+import { Container, Typography, Box, Button, Grid, Paper, Link } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { Link as RouterLink } from 'react-router-dom';
 
 const HeroSection = styled(Box)(({ theme }) => ({
   background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -82,7 +83,13 @@ function Home() {
             Ready to get started?
           </Typography>
           <Box sx={{ textAlign: 'center', mt: 4 }}>
-            <Button variant="contained" color="primary" size="large">
+            <Button 
+              variant="contained" 
+              color="primary" 
+              size="large"
+              component={RouterLink}
+              to="/register"
+            >
               Sign Up Now
             </Button>
           </Box>
