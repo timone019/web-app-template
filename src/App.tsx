@@ -22,6 +22,7 @@ import Pricing from './pages/Pricing';
 import Resources from './pages/Resources';
 import Roadmap from './pages/Roadmap';
 import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 
 const App = () => {
   return (
@@ -157,6 +158,17 @@ const AppContent = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                   <Box sx={{ flex: 1, mt: 8 }}>
                     <Privacy />
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
+            <Route
+              path="/terms"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1, mt: 8 }}>
+                    <Terms />
                   </Box>
                   <Footer />
                 </Box>
