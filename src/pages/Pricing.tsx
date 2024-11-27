@@ -18,12 +18,22 @@ import {
   ListItemText,
   Divider,
   Chip,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  useTheme,
+  useMediaQuery
 } from '@mui/material';
 import {
   Check as CheckIcon,
   Close as CloseIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 interface PricingTier {
   title: string;
@@ -96,6 +106,37 @@ const pricingTiers: PricingTier[] = [
     ],
     buttonText: 'Contact Sales',
   },
+];
+
+const featuresList = [
+  {
+    category: 'Core Features',
+    features: [
+      { name: 'Product Listings', free: true, pro: true, enterprise: true, info: 'List and manage your products' },
+      { name: 'Basic Analytics', free: true, pro: true, enterprise: true, info: 'View basic sales metrics' },
+      { name: 'Customer Management', free: false, pro: true, enterprise: true, info: 'Manage customer data and interactions' },
+      { name: 'Advanced Analytics', free: false, pro: true, enterprise: true, info: 'Detailed insights and reporting' },
+      { name: 'Custom Reporting', free: false, pro: false, enterprise: true, info: 'Create and schedule custom reports' }
+    ]
+  },
+  {
+    category: 'Support',
+    features: [
+      { name: 'Email Support', free: true, pro: true, enterprise: true, info: 'Get help via email' },
+      { name: 'Priority Support', free: false, pro: true, enterprise: true, info: 'Fast response times' },
+      { name: 'Dedicated Account Manager', free: false, pro: false, enterprise: true, info: 'Personal support contact' },
+      { name: '24/7 Phone Support', free: false, pro: false, enterprise: true, info: 'Round-the-clock assistance' }
+    ]
+  },
+  {
+    category: 'E-commerce Features',
+    features: [
+      { name: 'Inventory Management', free: true, pro: true, enterprise: true, info: 'Track and manage stock' },
+      { name: 'Multiple Payment Gateways', free: false, pro: true, enterprise: true, info: 'Accept various payment methods' },
+      { name: 'Advanced Shipping Rules', free: false, pro: true, enterprise: true, info: 'Complex shipping configurations' },
+      { name: 'Bulk Order Management', free: false, pro: false, enterprise: true, info: 'Handle large order volumes' }
+    ]
+  }
 ];
 
 function Pricing() {
@@ -245,6 +286,79 @@ function Pricing() {
           </Grid>
         ))}
       </Grid>
+
+      {/* Comparison Table Section */}
+      <Box sx={{ mt: 8, mb: 6 }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Feature Comparison
+        </Typography>
+        <Typography variant="subtitle1" align="center" color="text.secondary" sx={{ mb: 4 }}>
+          Compare plans to find the perfect fit for your business
+        </Typography>
+        
+        <TableContainer component={Paper} elevation={2}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontWeight: 'bold', width: '30%' }}>Feature</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Free</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', bgcolor: 'primary.light', color: 'primary.contrastText' }}>Pro</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Enterprise</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {featuresList.map((category) => (
+                <>
+                  <TableRow>
+                    <TableCell colSpan={4} sx={{ bgcolor: 'grey.100', fontWeight: 'bold' }}>
+                      {category.category}
+                    </TableCell>
+                  </TableRow>
+                  {category.features.map((feature) => (
+                    <TableRow key={feature.name}>
+                      <TableCell>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          {feature.name}
+                          <InfoOutlinedIcon
+                            fontSize="small"
+                            color="action"
+                            sx={{ 
+                              cursor: 'help',
+                              '&:hover': { color: 'primary.main' }
+                            }}
+                            titleAccess={feature.info}
+                          />
+                        </Box>
+                      </TableCell>
+                      <TableCell align="center">
+                        {feature.free ? (
+                          <CheckIcon color="success" />
+                        ) : (
+                          <CloseIcon color="error" />
+                        )}
+                      </TableCell>
+                      <TableCell align="center" sx={{ bgcolor: 'primary.light', color: 'primary.contrastText' }}>
+                        {feature.pro ? (
+                          <CheckIcon sx={{ color: 'primary.contrastText' }} />
+                        ) : (
+                          <CloseIcon sx={{ color: 'error.light' }} />
+                        )}
+                      </TableCell>
+                      <TableCell align="center">
+                        {feature.enterprise ? (
+                          <CheckIcon color="success" />
+                        ) : (
+                          <CloseIcon color="error" />
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
 
       {/* FAQ Section */}
       <Box sx={{ mt: 8, textAlign: 'center' }}>
