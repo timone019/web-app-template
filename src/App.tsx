@@ -25,6 +25,8 @@ import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Cookie from './pages/Cookie';
 import Security from './pages/Security';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 
 const App = () => {
   return (
@@ -193,6 +195,28 @@ const AppContent = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                   <Box sx={{ flex: 1, mt: 8 }}>
                     <Security />
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
+            <Route
+              path="/blog"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1, mt: 8 }}>
+                    <Blog />
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
+            <Route
+              path="/blog/:slug"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1, mt: 8 }}>
+                    <BlogPost />
                   </Box>
                   <Footer />
                 </Box>
