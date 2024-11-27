@@ -20,6 +20,7 @@ import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
 import Pricing from './pages/Pricing';
 import Resources from './pages/Resources';
+import Roadmap from './pages/Roadmap';
 
 const App = () => {
   return (
@@ -133,6 +134,17 @@ const AppContent = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                   <Box sx={{ flex: 1, mt: 8 }}>
                     <Resources />
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
+            <Route
+              path="/roadmap"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1, mt: 8 }}>
+                    <Roadmap />
                   </Box>
                   <Footer />
                 </Box>
