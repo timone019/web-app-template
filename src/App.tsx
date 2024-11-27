@@ -1,8 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Box, CssBaseline, ThemeProvider as MuiThemeProvider } from '@mui/material';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import { Box, CssBaseline } from '@mui/material';
 import { CustomThemeProvider, useCustomTheme } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
+import { SnackbarProvider } from './contexts/SnackbarContext';
 import { getTheme } from './theme';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -23,7 +25,9 @@ const App = () => {
     <Router>
       <AuthProvider>
         <CustomThemeProvider>
-          <AppContent />
+          <SnackbarProvider>
+            <AppContent />
+          </SnackbarProvider>
         </CustomThemeProvider>
       </AuthProvider>
     </Router>

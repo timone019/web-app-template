@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Container,
   Grid,
@@ -18,6 +18,10 @@ import {
   ListItemText,
   Divider,
   Chip,
+  Alert,
+  AlertTitle,
+  Collapse,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -25,16 +29,10 @@ import {
   TableHead,
   TableRow,
   Paper,
-  useTheme,
-  useMediaQuery,
+  Stack,
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Stack,
-  Alert,
-  AlertTitle,
-  Collapse,
-  IconButton,
 } from '@mui/material';
 import {
   Check as CheckIcon,
@@ -44,6 +42,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import { useNavigate } from 'react-router-dom';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { useAuth } from '../contexts/AuthContext';
+import { useSnackbar } from '../contexts/SnackbarContext';
 
 interface PricingTier {
   title: string;
@@ -58,6 +58,19 @@ interface PricingTier {
   }[];
   buttonText: string;
   highlighted?: boolean;
+}
+
+interface SubscriptionDetails {
+  planId: string;
+  interval: 'monthly' | 'yearly';
+  isTrial: boolean;
+  price: number;
+}
+
+interface PlanTier {
+  free: { planId: string; price: number };
+  pro: { planId: string; price: number };
+  enterprise: { planId: string; price: null };
 }
 
 const pricingTiers: PricingTier[] = [
@@ -184,25 +197,116 @@ const faqData = [
   }
 ];
 
+const plans: PlanTier = {
+  free: {
+    planId: 'free_tier',
+    price: 0,
+  },
+  pro: {
+    planId: 'pro_monthly',
+    price: 29.99,
+  },
+  enterprise: {
+    planId: 'enterprise_monthly',
+    price: null,
+  },
+} as const;
+
+const getPlanDetails = (tier: 'free' | 'pro' | 'enterprise', isYearly: boolean): SubscriptionDetails => {
+  const selectedPlan = plans[tier];
+  const price = tier === 'pro' && isYearly ? 299.88 : selectedPlan.price;
+  const planId = tier === 'pro' && isYearly ? 'pro_yearly' : selectedPlan.planId;
+
+  return {
+    planId,
+    interval: isYearly ? 'yearly' : 'monthly',
+    isTrial: false,
+    price: price ?? 0,
+  };
+};
+
 function Pricing() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const { showSnackbar } = useSnackbar();
   const [isYearly, setIsYearly] = useState(false);
   const [showBanner, setShowBanner] = useState(true);
-  const [timeLeft, setTimeLeft] = useState(14); // Days left in promotion
+  const [timeLeft, setTimeLeft] = useState(14);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
-    // Simulate countdown - in production, this would be based on actual promotion end date
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 14));
-    }, 86400000); // Update every 24 hours
-
+    }, 86400000);
     return () => clearInterval(timer);
   }, []);
 
-  const handleSubscribe = (tier: string) => {
-    // TODO: Implement subscription logic
-    console.log(`Subscribing to ${tier} plan`);
-  };
+  const handleSubscribe = useCallback(async (tier: 'free' | 'pro' | 'enterprise', isTrial: boolean = false) => {
+    setIsProcessing(true);
+    try {
+      if (!isAuthenticated) {
+        sessionStorage.setItem('subscriptionIntent', JSON.stringify({
+          tier,
+          isTrial,
+          isYearly,
+        }));
+        showSnackbar('Please log in to continue with subscription', 'info');
+        navigate('/login', { state: { from: '/pricing' } });
+        return;
+      }
+
+      const subscriptionDetails = getPlanDetails(tier, isYearly);
+      subscriptionDetails.isTrial = isTrial;
+
+      if (tier === 'free') {
+        showSnackbar('Successfully switched to Free plan', 'success');
+        navigate('/dashboard');
+        return;
+      }
+
+      if (tier === 'enterprise') {
+        navigate('/contact', {
+          state: {
+            subject: 'Enterprise Plan Inquiry',
+            message: `I'm interested in the Enterprise plan with ${isYearly ? 'yearly' : 'monthly'} billing.`,
+          },
+        });
+        return;
+      }
+
+      navigate('/checkout', {
+        state: {
+          plan: subscriptionDetails,
+          returnUrl: '/dashboard',
+        },
+      });
+
+    } catch (error) {
+      console.error('Subscription error:', error);
+      showSnackbar(
+        'There was an error processing your request. Please try again.',
+        'error'
+      );
+    } finally {
+      setIsProcessing(false);
+    }
+  }, [isAuthenticated, isYearly, navigate, showSnackbar]);
+
+  const handleFreeTrial = useCallback(() => {
+    handleSubscribe('pro', true);
+  }, [handleSubscribe]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const intent = sessionStorage.getItem('subscriptionIntent');
+      if (intent) {
+        const { tier, isTrial, isYearly: yearlyBilling } = JSON.parse(intent);
+        sessionStorage.removeItem('subscriptionIntent');
+        setIsYearly(yearlyBilling);
+        handleSubscribe(tier, isTrial);
+      }
+    }
+  }, [isAuthenticated, handleSubscribe]);
 
   return (
     <Container maxWidth="lg" sx={{ py: 8 }}>
@@ -259,6 +363,8 @@ function Pricing() {
               variant="contained"
               color="primary"
               size="small"
+              disabled={isProcessing}
+              onClick={handleFreeTrial}
               sx={{
                 bgcolor: 'common.white',
                 color: 'primary.main',
@@ -267,9 +373,8 @@ function Pricing() {
                 },
                 ml: 2,
               }}
-              onClick={() => handleSubscribe('pro')}
             >
-              Start Free Trial
+              {isProcessing ? 'Processing...' : 'Start Free Trial'}
             </Button>
           </Box>
         </Alert>
@@ -316,12 +421,13 @@ function Pricing() {
       </Box>
 
       {/* Pricing Cards */}
-      <Grid container spacing={4} alignItems="flex-start">
+      <Grid container spacing={4} justifyContent="center">
         {pricingTiers.map((tier) => (
           <Grid
             item
             key={tier.title}
             xs={12}
+            sm={tier.title === 'Pro' ? 12 : 6}
             md={4}
           >
             <Card
@@ -329,13 +435,9 @@ function Pricing() {
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                position: 'relative',
-                transform: tier.highlighted ? 'scale(1.05)' : 'none',
-                border: tier.highlighted ? '2px solid primary.main' : 'none',
-                boxShadow: tier.highlighted ? 3 : 1,
-                transition: 'transform 0.2s ease-in-out',
-                '&:hover': {
-                  transform: tier.highlighted ? 'scale(1.07)' : 'scale(1.02)',
+                ...tier.title === 'Pro' && {
+                  transform: 'scale(1.05)',
+                  zIndex: 1,
                 },
               }}
             >
@@ -397,14 +499,15 @@ function Pricing() {
                   ))}
                 </List>
               </CardContent>
-              <CardActions sx={{ p: 3, pt: 0 }}>
+              <CardActions sx={{ mt: 'auto', p: 2 }}>
                 <Button
                   fullWidth
-                  variant={tier.highlighted ? 'contained' : 'outlined'}
+                  variant={tier.title === 'Pro' ? 'contained' : 'outlined'}
                   color="primary"
-                  onClick={() => handleSubscribe(tier.title)}
+                  disabled={isProcessing}
+                  onClick={() => handleSubscribe(tier.title.toLowerCase() as 'free' | 'pro' | 'enterprise')}
                 >
-                  {tier.buttonText}
+                  {isProcessing ? 'Processing...' : tier.buttonText}
                 </Button>
               </CardActions>
             </Card>
