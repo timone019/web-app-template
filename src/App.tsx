@@ -23,6 +23,7 @@ import Resources from './pages/Resources';
 import Roadmap from './pages/Roadmap';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
+import Cookie from './pages/Cookie';
 
 const App = () => {
   return (
@@ -169,6 +170,17 @@ const AppContent = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                   <Box sx={{ flex: 1, mt: 8 }}>
                     <Terms />
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
+            <Route
+              path="/cookie"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1, mt: 8 }}>
+                    <Cookie />
                   </Box>
                   <Footer />
                 </Box>
