@@ -26,12 +26,17 @@ import {
   TableRow,
   Paper,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Stack,
 } from '@mui/material';
 import {
   Check as CheckIcon,
   Close as CloseIcon,
 } from '@mui/icons-material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useNavigate } from 'react-router-dom';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
@@ -136,6 +141,41 @@ const featuresList = [
       { name: 'Advanced Shipping Rules', free: false, pro: true, enterprise: true, info: 'Complex shipping configurations' },
       { name: 'Bulk Order Management', free: false, pro: false, enterprise: true, info: 'Handle large order volumes' }
     ]
+  }
+];
+
+const faqData = [
+  {
+    question: "How do I get started with the free plan?",
+    answer: "Getting started is easy! Simply create an account and you'll automatically be enrolled in our Free plan. You can start listing products and exploring our basic features immediately. No credit card required."
+  },
+  {
+    question: "Can I upgrade or downgrade my plan at any time?",
+    answer: "Yes, you can change your plan at any time. When upgrading, you'll have immediate access to new features and will be billed the prorated amount for the remainder of your billing cycle. When downgrading, changes will take effect at the start of your next billing cycle."
+  },
+  {
+    question: "What payment methods do you accept?",
+    answer: "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers for annual enterprise plans. All payments are processed securely through our payment partners."
+  },
+  {
+    question: "Is there a long-term contract?",
+    answer: "No, our monthly plans are pay-as-you-go with no long-term commitment. Annual plans offer a 20% discount and can be cancelled before renewal. Enterprise plans may have custom terms based on your needs."
+  },
+  {
+    question: "What kind of support can I expect?",
+    answer: "Support varies by plan. Free users get email support with 48-hour response time. Pro users receive priority email support with 24-hour response time. Enterprise customers get 24/7 phone support and a dedicated account manager."
+  },
+  {
+    question: "Do you offer a free trial of Pro features?",
+    answer: "Yes! We offer a 14-day free trial of our Pro plan. You'll get full access to all Pro features during the trial period. No credit card is required to start the trial."
+  },
+  {
+    question: "How secure is my data?",
+    answer: "We take security seriously. All data is encrypted in transit and at rest, we perform regular security audits, and maintain compliance with industry standards. We offer two-factor authentication and regular backups across all plans."
+  },
+  {
+    question: "What happens if I exceed my plan limits?",
+    answer: "We'll notify you when you're approaching your plan limits. If you exceed them, we'll work with you to either upgrade to a more suitable plan or optimize your usage. We never automatically charge for overages without your consent."
   }
 ];
 
@@ -361,21 +401,59 @@ function Pricing() {
       </Box>
 
       {/* FAQ Section */}
-      <Box sx={{ mt: 8, textAlign: 'center' }}>
-        <Typography variant="h4" gutterBottom>
+      <Box sx={{ mt: 8, mb: 6 }}>
+        <Typography variant="h4" align="center" gutterBottom>
           Frequently Asked Questions
         </Typography>
-        <Typography color="text.secondary">
-          Need help? Check out our FAQ or contact our support team.
+        <Typography variant="subtitle1" align="center" color="text.secondary" sx={{ mb: 4 }}>
+          Have questions? We're here to help.
         </Typography>
-        <Button
-          variant="outlined"
-          color="primary"
-          sx={{ mt: 2 }}
-          onClick={() => navigate('/contact')}
-        >
-          Contact Support
-        </Button>
+
+        <Container maxWidth="md">
+          <Stack spacing={2}>
+            {faqData.map((faq, index) => (
+              <Accordion key={index} elevation={1}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls={`faq-content-${index}`}
+                  id={`faq-header-${index}`}
+                  sx={{
+                    '&:hover': {
+                      bgcolor: 'rgba(0, 0, 0, 0.04)',
+                    },
+                  }}
+                >
+                  <Typography variant="subtitle1" fontWeight="medium">
+                    {faq.question}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography color="text.secondary">
+                    {faq.answer}
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            ))}
+          </Stack>
+
+          <Box sx={{ mt: 6, textAlign: 'center' }}>
+            <Typography variant="h6" gutterBottom>
+              Still have questions?
+            </Typography>
+            <Typography variant="body1" color="text.secondary" gutterBottom>
+              We're here to help! Contact our support team.
+            </Typography>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="large"
+              onClick={() => window.location.href = 'mailto:support@example.com'}
+              sx={{ mt: 2 }}
+            >
+              Contact Support
+            </Button>
+          </Box>
+        </Container>
       </Box>
     </Container>
   );
