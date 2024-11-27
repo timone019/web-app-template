@@ -13,6 +13,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Ecommerce from './pages/Ecommerce';
 
 const App = () => {
   return (
@@ -74,6 +75,17 @@ const AppContent = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route
+              path="/ecommerce"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1 }}>
+                    <Ecommerce />
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Box>

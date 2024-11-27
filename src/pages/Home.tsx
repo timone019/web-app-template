@@ -23,8 +23,9 @@ const FeatureCard = styled(Paper)(({ theme }) => ({
 function Home() {
   const features = [
     {
-      title: 'Feature 1',
-      description: 'Description of feature 1. This is a placeholder text that showcases what this feature does.',
+      title: 'E-commerce Platform',
+      description: 'A full-featured online store with product catalog, shopping cart, and secure Stripe payments. Perfect for businesses looking to sell products online.',
+      link: '/ecommerce'
     },
     {
       title: 'Feature 2',
@@ -68,9 +69,20 @@ function Home() {
                 <Typography variant="h5" component="h3" gutterBottom>
                   {feature.title}
                 </Typography>
-                <Typography>
+                <Typography sx={{ mb: 2 }}>
                   {feature.description}
                 </Typography>
+                {feature.link && (
+                  <Button
+                    component={RouterLink}
+                    to={feature.link}
+                    variant="outlined"
+                    color="primary"
+                    sx={{ mt: 'auto' }}
+                  >
+                    Explore
+                  </Button>
+                )}
               </FeatureCard>
             </Grid>
           ))}
