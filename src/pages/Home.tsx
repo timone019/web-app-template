@@ -2,6 +2,9 @@ import React from 'react';
 import { Container, Typography, Box, Button, Grid, Paper } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
+import CalculateIcon from '@mui/icons-material/Calculate';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const HeroSection = styled(Box)(({ theme }) => ({
   background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -10,31 +13,43 @@ const HeroSection = styled(Box)(({ theme }) => ({
   textAlign: 'center',
 }));
 
-const FeatureCard = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(3),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-}));
-
 function Home() {
   const features = [
     {
       title: 'E-commerce Platform',
       description: 'Launch your online store with our comprehensive e-commerce solution. Manage products, orders, and customers with ease.',
-      link: '/ecommerce'
+      icon: <ShoppingCartIcon sx={{ fontSize: 40 }} />,
+      path: '/ecommerce',
+      features: [
+        'Product management',
+        'Order processing',
+        'Customer management',
+        'Analytics dashboard'
+      ]
     },
     {
       title: 'Budget Tracker Platform',
       description: 'Keep track of your finances with our intuitive budget tracker. Monitor income, expenses, set savings goals, and visualize your financial data.',
-      link: '/budget-tracker'
+      icon: <AccountBalanceWalletIcon sx={{ fontSize: 40 }} />,
+      path: '/budget-tracker',
+      features: [
+        'Track income and expenses',
+        'Set and monitor savings goals',
+        'Visualize financial data',
+        'Categorize transactions'
+      ]
     },
     {
-      title: 'Feature 3',
-      description: 'Description of feature 3. This is a placeholder text that showcases what this feature does.',
+      title: 'Freelancer Rate Calculator',
+      description: 'Calculate optimal hourly rates, manage client templates, and track your freelance income with our comprehensive calculator. Features include tax estimation, expense tracking, and customizable rate templates.',
+      icon: <CalculateIcon sx={{ fontSize: 40 }} />,
+      path: '/freelancer-calculator',
+      features: [
+        'Calculate hourly rates based on desired income and expenses',
+        'Save and manage client-specific rate templates',
+        'Track billable hours and generate invoices',
+        'Estimate taxes and fees for accurate pricing'
+      ]
     },
   ];
 
@@ -63,29 +78,43 @@ function Home() {
         <Typography variant="h3" component="h2" gutterBottom align="center" sx={{ mb: 6 }}>
           Our Features
         </Typography>
-        <Grid container spacing={4}>
+        <Grid container spacing={3}>
           {features.map((feature, index) => (
             <Grid item xs={12} md={4} key={index}>
-              <FeatureCard elevation={2}>
-                <Typography variant="h5" component="h2" gutterBottom sx={{ minHeight: 60 }}>
+              <Paper
+                sx={{
+                  p: 3,
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Box sx={{ mb: 2 }}>
+                  {feature.icon}
+                </Box>
+                <Typography
+                  variant="h5"
+                  component="h3"
+                  gutterBottom
+                  sx={{ minHeight: { md: '64px' } }}
+                >
                   {feature.title}
                 </Typography>
-                <Typography sx={{ mb: 2 }}>
+                <Typography color="text.secondary" paragraph>
                   {feature.description}
                 </Typography>
-                {feature.link && (
-                  <Box sx={{ mt: 'auto' }}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      component={RouterLink}
-                      to={feature.link}
-                    >
-                      Explore
-                    </Button>
-                  </Box>
-                )}
-              </FeatureCard>
+                <Box sx={{ mt: 'auto', display: 'flex', justifyContent: 'center' }}>
+                  <Button
+                    component={RouterLink}
+                    to={feature.path || '/'}
+                    variant="contained"
+                    color="primary"
+                    sx={{ textDecoration: 'none', minWidth: '120px' }}
+                  >
+                    Explore
+                  </Button>
+                </Box>
+              </Paper>
             </Grid>
           ))}
         </Grid>

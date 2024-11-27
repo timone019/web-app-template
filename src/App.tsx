@@ -31,6 +31,7 @@ import Careers from './pages/Careers';
 import JobPosting from './pages/JobPosting';
 import Features from './pages/Features';
 import BudgetTracker from './pages/BudgetTracker';
+import FreelancerCalculator from './pages/FreelancerCalculator';
 
 const App = () => {
   return (
@@ -265,6 +266,28 @@ const AppContent = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                   <Box sx={{ flex: 1, mt: 8 }}>
                     <BudgetTracker />
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
+            <Route
+              path="/freelancer-calculator"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1, mt: 8 }}>
+                    <FreelancerCalculator />
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
+            <Route
+              path="/resources"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1, mt: 8 }}>
+                    <Resources />
                   </Box>
                   <Footer />
                 </Box>
