@@ -32,6 +32,275 @@ import JobPosting from './pages/JobPosting';
 import Features from './pages/Features';
 import BudgetTracker from './pages/BudgetTracker';
 import FreelancerCalculator from './pages/FreelancerCalculator';
+import InvoiceGenerator from './pages/InvoiceGenerator';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
+const AppContent = () => {
+  const { darkMode } = useCustomTheme();
+  
+  return (
+    <MuiThemeProvider theme={getTheme(darkMode ? 'dark' : 'light')}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <CssBaseline />
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+          <Navbar />
+          <Box component="main" sx={{ flex: 1 }}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1 }}>
+                      <Home />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1 }}>
+                      <About />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/contact"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1 }}>
+                      <Contact />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/ecommerce"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1 }}>
+                      <Ecommerce />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/checkout"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1 }}>
+                      <Checkout />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/order-confirmation"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1 }}>
+                      <OrderConfirmation />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/pricing"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1 }}>
+                      <Pricing />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/resources"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1, mt: 8 }}>
+                      <Resources />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/roadmap"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1, mt: 8 }}>
+                      <Roadmap />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/privacy"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1, mt: 8 }}>
+                      <Privacy />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/terms"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1, mt: 8 }}>
+                      <Terms />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/cookie"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1, mt: 8 }}>
+                      <Cookie />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/security"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1, mt: 8 }}>
+                      <Security />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/blog"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1, mt: 8 }}>
+                      <Blog />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/blog/:slug"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1, mt: 8 }}>
+                      <BlogPost />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/careers"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1 }}>
+                      <Careers />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/careers/:slug"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1, mt: 8 }}>
+                      <JobPosting />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/features"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1, mt: 8 }}>
+                      <Features />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/budget-tracker"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1, mt: 8 }}>
+                      <BudgetTracker />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/freelancer-calculator"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1, mt: 8 }}>
+                      <FreelancerCalculator />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/invoice-generator"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1, mt: 8 }}>
+                      <InvoiceGenerator />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route
+                path="/resources"
+                element={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <Box sx={{ flex: 1, mt: 8 }}>
+                      <Resources />
+                    </Box>
+                    <Footer />
+                  </Box>
+                }
+              />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Box>
+        </Box>
+      </LocalizationProvider>
+    </MuiThemeProvider>
+  );
+};
 
 const App = () => {
   return (
@@ -44,260 +313,6 @@ const App = () => {
         </CustomThemeProvider>
       </AuthProvider>
     </Router>
-  );
-};
-
-const AppContent = () => {
-  const { darkMode } = useCustomTheme();
-  const theme = getTheme(darkMode ? 'dark' : 'light');
-
-  return (
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <Navbar />
-        <Box component="main" sx={{ flex: 1 }}>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1 }}>
-                    <Home />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/about"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1 }}>
-                    <About />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/contact"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1 }}>
-                    <Contact />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route
-              path="/ecommerce"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1 }}>
-                    <Ecommerce />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/checkout"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1 }}>
-                    <Checkout />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/order-confirmation"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1 }}>
-                    <OrderConfirmation />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/pricing"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1 }}>
-                    <Pricing />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/resources"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1, mt: 8 }}>
-                    <Resources />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/roadmap"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1, mt: 8 }}>
-                    <Roadmap />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/privacy"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1, mt: 8 }}>
-                    <Privacy />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/terms"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1, mt: 8 }}>
-                    <Terms />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/cookie"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1, mt: 8 }}>
-                    <Cookie />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/security"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1, mt: 8 }}>
-                    <Security />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/blog"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1, mt: 8 }}>
-                    <Blog />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/blog/:slug"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1, mt: 8 }}>
-                    <BlogPost />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/careers"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1 }}>
-                    <Careers />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/careers/:slug"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1, mt: 8 }}>
-                    <JobPosting />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/features"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1, mt: 8 }}>
-                    <Features />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/budget-tracker"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1, mt: 8 }}>
-                    <BudgetTracker />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/freelancer-calculator"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1, mt: 8 }}>
-                    <FreelancerCalculator />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route
-              path="/resources"
-              element={
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                  <Box sx={{ flex: 1, mt: 8 }}>
-                    <Resources />
-                  </Box>
-                  <Footer />
-                </Box>
-              }
-            />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Box>
-      </Box>
-    </MuiThemeProvider>
   );
 };
 

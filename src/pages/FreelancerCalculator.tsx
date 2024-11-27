@@ -14,7 +14,9 @@ import {
 import {
   Save as SaveIcon,
   Delete as DeleteIcon,
+  Description as DescriptionIcon,
 } from '@mui/icons-material';
+import { Link as RouterLink } from 'react-router-dom';
 
 interface ProjectTemplate {
   id: string;
@@ -146,9 +148,20 @@ const FreelancerCalculator = () => {
           </Paper>
 
           <Paper sx={{ mt: 3, p: 3 }}>
-            <Typography variant="h5" gutterBottom>
-              Your Calculated Rate
-            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography variant="h5" gutterBottom>
+                Your Calculated Rate
+              </Typography>
+              <Button
+                variant="contained"
+                color="secondary"
+                component={RouterLink}
+                to="/invoice-generator"
+                startIcon={<DescriptionIcon />}
+              >
+                Generate Invoice
+              </Button>
+            </Box>
             <Typography variant="h3" color="primary">
               ${calculateHourlyRate()}/hr
             </Typography>
