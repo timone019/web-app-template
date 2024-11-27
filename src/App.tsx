@@ -30,6 +30,7 @@ import BlogPost from './pages/BlogPost';
 import Careers from './pages/Careers';
 import JobPosting from './pages/JobPosting';
 import Features from './pages/Features';
+import BudgetTracker from './pages/BudgetTracker';
 
 const App = () => {
   return (
@@ -253,6 +254,17 @@ const AppContent = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                   <Box sx={{ flex: 1, mt: 8 }}>
                     <Features />
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
+            <Route
+              path="/budget-tracker"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1, mt: 8 }}>
+                    <BudgetTracker />
                   </Box>
                   <Footer />
                 </Box>

@@ -24,12 +24,13 @@ function Home() {
   const features = [
     {
       title: 'E-commerce Platform',
-      description: 'A full-featured online store with product catalog, shopping cart, and secure Stripe payments. Perfect for businesses looking to sell products online.',
+      description: 'Launch your online store with our comprehensive e-commerce solution. Manage products, orders, and customers with ease.',
       link: '/ecommerce'
     },
     {
-      title: 'Feature 2',
-      description: 'Description of feature 2. This is a placeholder text that showcases what this feature does.',
+      title: 'Budget Tracker Platform',
+      description: 'Keep track of your finances with our intuitive budget tracker. Monitor income, expenses, set savings goals, and visualize your financial data.',
+      link: '/budget-tracker'
     },
     {
       title: 'Feature 3',
@@ -66,22 +67,23 @@ function Home() {
           {features.map((feature, index) => (
             <Grid item xs={12} md={4} key={index}>
               <FeatureCard elevation={2}>
-                <Typography variant="h5" component="h3" gutterBottom>
+                <Typography variant="h5" component="h2" gutterBottom sx={{ minHeight: 60 }}>
                   {feature.title}
                 </Typography>
                 <Typography sx={{ mb: 2 }}>
                   {feature.description}
                 </Typography>
                 {feature.link && (
-                  <Button
-                    component={RouterLink}
-                    to={feature.link}
-                    variant="outlined"
-                    color="primary"
-                    sx={{ mt: 'auto' }}
-                  >
-                    Explore
-                  </Button>
+                  <Box sx={{ mt: 'auto' }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      component={RouterLink}
+                      to={feature.link}
+                    >
+                      Explore
+                    </Button>
+                  </Box>
                 )}
               </FeatureCard>
             </Grid>
