@@ -1,13 +1,8 @@
 import React from 'react';
 import {
+  Box,
   Container,
   Typography,
-  Box,
-  Paper,
-  Stepper,
-  Step,
-  StepLabel,
-  StepContent,
   Chip,
   Grid,
   Card,

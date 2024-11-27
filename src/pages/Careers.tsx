@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Container,
@@ -10,7 +10,6 @@ import {
   TextField,
   InputAdornment,
   Chip,
-  Divider,
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
@@ -90,8 +89,8 @@ const departments = ['All', 'Engineering', 'Product', 'Design', 'Marketing', 'Sa
 const locations = ['All Locations', 'San Francisco, CA', 'New York, NY', 'Seattle, WA', 'Remote'];
 
 const Careers = () => {
-  const [selectedDepartment, setSelectedDepartment] = useState('All');
-  const [selectedLocation, setSelectedLocation] = useState('All Locations');
+  const [selectedDepartment, setSelectedDepartment] = React.useState('All');
+  const [selectedLocation, setSelectedLocation] = React.useState('All Locations');
 
   return (
     <Box>

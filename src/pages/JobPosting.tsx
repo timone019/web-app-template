@@ -78,7 +78,7 @@ const jobData = {
 };
 
 const JobPosting = () => {
-  const { slug } = useParams();
+  useParams();
 
   return (
     <Container maxWidth="lg">

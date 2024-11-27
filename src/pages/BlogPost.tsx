@@ -94,7 +94,7 @@ const blogPost = {
 };
 
 const BlogPost = () => {
-  const { slug } = useParams();
+  useParams();
 
   return (
     <Container maxWidth="lg">

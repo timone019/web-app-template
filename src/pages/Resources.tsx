@@ -20,7 +20,6 @@ import {
 } from '@mui/material';
 import {
   MenuBook as GuideIcon,
-  LiveHelp as FAQIcon,
   VideoLibrary as TutorialIcon,
   Description as DocumentIcon,
   Code as APIIcon,
