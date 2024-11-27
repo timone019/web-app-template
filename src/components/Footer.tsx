@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
 
   const footerLinks: Record<string, FooterLink[]> = {
     product: [
-      { name: 'Features', href: '#' },
+      { name: 'Features', path: '/features' },
       { name: 'Pricing', path: '/pricing' },
       { name: 'Resources', path: '/resources' },
       { name: 'Roadmap', path: '/roadmap' },
