@@ -64,6 +64,8 @@ function Home() {
             Your one-stop solution for everything you need
           </Typography>
           <Button
+            component={RouterLink}
+            to="/register"
             variant="contained"
             color="secondary"
             size="large"
