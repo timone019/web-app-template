@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
       { name: 'Blog', href: '#' },
     ],
     legal: [
-      { name: 'Privacy Policy', href: '#' },
+      { name: 'Privacy Policy', path: '/privacy' },
       { name: 'Terms of Service', href: '#' },
       { name: 'Cookie Policy', href: '#' },
       { name: 'Security', href: '#' },
@@ -128,19 +128,36 @@ const Footer: React.FC = () => {
             <Box>
               {footerLinks.legal.map((link) => (
                 <Box key={link.name} sx={{ py: 0.5 }}>
-                  <Link
-                    href={link.href}
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{
-                      textDecoration: 'none',
-                      '&:hover': {
-                        textDecoration: 'underline',
-                      },
-                    }}
-                  >
-                    {link.name}
-                  </Link>
+                  {link.path ? (
+                    <Link
+                      component={RouterLink}
+                      to={link.path}
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        textDecoration: 'none',
+                        '&:hover': {
+                          textDecoration: 'underline',
+                        },
+                      }}
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        textDecoration: 'none',
+                        '&:hover': {
+                          textDecoration: 'underline',
+                        },
+                      }}
+                    >
+                      {link.name}
+                    </Link>
+                  )}
                 </Box>
               ))}
             </Box>
