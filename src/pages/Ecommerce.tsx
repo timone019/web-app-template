@@ -26,7 +26,11 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  OutlinedInput,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Menu,
 } from '@mui/material';
 import {
   ShoppingCart as ShoppingCartIcon,
@@ -34,9 +38,11 @@ import {
   Remove as RemoveIcon,
   Delete as DeleteIcon,
   Search as SearchIcon,
-  Star as StarIcon,
+  Bookmark as BookmarkIcon,
+  BookmarkBorder as BookmarkBorderIcon,
 } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useShoppingList } from '../contexts/ShoppingListContext';
 
 // Types
 interface Product {
@@ -146,6 +152,11 @@ const sampleProducts: Product[] = [
 
 function Ecommerce() {
   const navigate = useNavigate();
+  const { state: shoppingListState, dispatch: shoppingListDispatch } = useShoppingList();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [newListDialogOpen, setNewListDialogOpen] = useState(false);
+  const [newListName, setNewListName] = useState('');
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -160,12 +171,51 @@ function Ecommerce() {
     setSnackbar({ ...snackbar, open: false });
   };
 
+  const getTotalItems = () => {
+    return cart.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const handleCategoryChange = (event: any) => {
+    setSelectedCategory(event.target.value);
+  };
+
   const filteredProducts = sampleProducts.filter((product) => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          product.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'All Categories' || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const handleListSelect = (listId: string) => {
+    if (selectedProduct) {
+      shoppingListDispatch({
+        type: 'ADD_TO_LIST',
+        payload: { listId, product: selectedProduct },
+      });
+      setSnackbar({
+        open: true,
+        message: `${selectedProduct.name} added to list`,
+        severity: 'success',
+      });
+    }
+    setAnchorEl(null);
+    setSelectedProduct(null);
+  };
+
+  const handleCreateNewList = () => {
+    if (newListName.trim()) {
+      shoppingListDispatch({
+        type: 'CREATE_LIST',
+        payload: { name: newListName },
+      });
+      setNewListName('');
+      setNewListDialogOpen(false);
+      if (selectedProduct && shoppingListState.lists.length > 0) {
+        const newListId = shoppingListState.lists[shoppingListState.lists.length - 1].id;
+        handleListSelect(newListId);
+      }
+    }
+  };
 
   const addToCart = (product: Product) => {
     setCart((prevCart) => {
@@ -225,30 +275,69 @@ function Ecommerce() {
     });
   };
 
-  const getTotalItems = () =>
-    cart.reduce((total, item) => total + item.quantity, 0);
-
   const getTotalPrice = () =>
     cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  const handleCheckout = async () => {
-    // TODO: Implement Stripe checkout
-    console.log('Proceeding to checkout...');
+  const handleBookmarkClick = (event: React.MouseEvent<HTMLButtonElement>, product: Product) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedProduct(product);
   };
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      {/* Shopping List Dialog */}
+      <Dialog open={newListDialogOpen} onClose={() => setNewListDialogOpen(false)}>
+        <DialogTitle>Create New Shopping List</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="List Name"
+            fullWidth
+            value={newListName}
+            onChange={(e) => setNewListName(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setNewListDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleCreateNewList} variant="contained">
+            Create
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Shopping Lists Menu */}
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={() => setAnchorEl(null)}
+      >
+        {shoppingListState.lists.map((list) => (
+          <MenuItem key={list.id} onClick={() => handleListSelect(list.id)}>
+            {list.name}
+          </MenuItem>
+        ))}
+        <Divider />
+        <MenuItem onClick={() => {
+          setNewListDialogOpen(true);
+          setAnchorEl(null);
+        }}>
+          <AddIcon sx={{ mr: 1 }} />
+          Create New List
+        </MenuItem>
+      </Menu>
+
       {/* Header and Search Section */}
       <Box sx={{ mb: 4 }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={4}>
             <FormControl fullWidth>
-              <InputLabel id="category-select-label">Category</InputLabel>
+              <InputLabel id="category-label">Category</InputLabel>
               <Select
-                labelId="category-select-label"
+                labelId="category-label"
                 value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                input={<OutlinedInput label="Category" />}
+                label="Category"
+                onChange={handleCategoryChange}
               >
                 {categories.map((category) => (
                   <MenuItem key={category} value={category}>
@@ -258,7 +347,7 @@ function Ecommerce() {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} md={7}>
+          <Grid item xs={12} md={4}>
             <TextField
               fullWidth
               placeholder="Search products..."
@@ -273,28 +362,21 @@ function Ecommerce() {
               }}
             />
           </Grid>
-          <Grid item xs={12} md={1} sx={{ display: 'flex', justifyContent: { xs: 'center', md: 'flex-end' } }}>
+          <Grid item xs={12} md={4} sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+            <Button
+              component={RouterLink}
+              to="/shopping-lists"
+              variant="outlined"
+              startIcon={<BookmarkIcon />}
+            >
+              My Lists
+            </Button>
             <IconButton
               color="primary"
               onClick={() => setIsCartOpen(true)}
-              sx={{ 
-                position: 'relative',
-                '&:hover': {
-                  transform: 'scale(1.1)',
-                  transition: 'transform 0.2s'
-                }
-              }}
+              sx={{ position: 'relative' }}
             >
-              <Badge 
-                badgeContent={getTotalItems()} 
-                color="secondary"
-                sx={{
-                  '& .MuiBadge-badge': {
-                    backgroundColor: '#f50057',
-                    color: 'white',
-                  }
-                }}
-              >
+              <Badge badgeContent={getTotalItems()} color="error">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -305,7 +387,7 @@ function Ecommerce() {
       {/* Products Grid */}
       <Grid container spacing={3}>
         {filteredProducts.map((product) => (
-          <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
+          <Grid item key={product.id} xs={12} sm={6} md={4}>
             <Card>
               <CardMedia
                 component="img"
@@ -314,9 +396,25 @@ function Ecommerce() {
                 alt={product.name}
               />
               <CardContent>
-                <Typography gutterBottom variant="h6" component="h2" noWrap>
-                  {product.name}
-                </Typography>
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                  <Typography gutterBottom variant="h6" component="div">
+                    {product.name}
+                  </Typography>
+                  <IconButton
+                    onClick={(e) => handleBookmarkClick(e, product)}
+                    color={shoppingListState.lists.some(
+                      list => list.products.some(p => p.id === product.id)
+                    ) ? 'primary' : 'default'}
+                  >
+                    {shoppingListState.lists.some(
+                      list => list.products.some(p => p.id === product.id)
+                    ) ? (
+                      <BookmarkIcon />
+                    ) : (
+                      <BookmarkBorderIcon />
+                    )}
+                  </IconButton>
+                </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                   <Rating value={product.rating} precision={0.1} readOnly size="small" />
                   <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
