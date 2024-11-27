@@ -16,6 +16,7 @@ import Register from './pages/Register';
 import Ecommerce from './pages/Ecommerce';
 import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
+import Pricing from './pages/Pricing';
 
 const App = () => {
   return (
@@ -105,6 +106,17 @@ const AppContent = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                   <Box sx={{ flex: 1 }}>
                     <OrderConfirmation />
+                  </Box>
+                  <Footer />
+                </Box>
+              }
+            />
+            <Route
+              path="/pricing"
+              element={
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Box sx={{ flex: 1 }}>
+                    <Pricing />
                   </Box>
                   <Footer />
                 </Box>

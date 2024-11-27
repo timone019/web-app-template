@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
   const footerLinks = {
     product: [
       { name: 'Features', href: '#' },
-      { name: 'Pricing', href: '#' },
+      { name: 'Pricing', href: '/pricing' },
       { name: 'Resources', href: '#' },
       { name: 'Roadmap', href: '#' },
     ],
@@ -140,10 +140,10 @@ const Footer: React.FC = () => {
               }}
             >
               <Typography variant="body2" color="text.secondary">
-                © {currentYear} Your Company Name. All rights reserved.
+                {currentYear} Your Company Name. All rights reserved.
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Made with ❤️ by Your Team
+                Made with by Your Team
               </Typography>
             </Box>
           </Grid>
