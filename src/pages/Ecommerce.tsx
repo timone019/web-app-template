@@ -36,6 +36,7 @@ import {
   Search as SearchIcon,
   Star as StarIcon,
 } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 // Types
 interface Product {
@@ -144,6 +145,7 @@ const sampleProducts: Product[] = [
 ];
 
 function Ecommerce() {
+  const navigate = useNavigate();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -425,9 +427,10 @@ function Ecommerce() {
                 variant="contained"
                 color="primary"
                 fullWidth
-                onClick={handleCheckout}
+                onClick={() => navigate('/checkout')}
+                startIcon={<ShoppingCartIcon />}
               >
-                Proceed to Checkout
+                Proceed to Checkout (${getTotalPrice().toFixed(2)})
               </Button>
             </Box>
           ) : (
