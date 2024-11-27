@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Grid, Typography, Link, IconButton } from '@mui/material';
+import { Box, Container, Grid, Typography, Link, IconButton, ListItem } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Facebook as FacebookIcon,
@@ -8,13 +8,19 @@ import {
   GitHub as GitHubIcon,
 } from '@mui/icons-material';
 
+interface FooterLink {
+  name: string;
+  path?: string;
+  href?: string;
+}
+
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
-  const footerLinks = {
+  const footerLinks: Record<string, FooterLink[]> = {
     product: [
       { name: 'Features', href: '#' },
-      { name: 'Pricing', href: '/pricing' },
+      { name: 'Pricing', path: '/pricing' },
       { name: 'Resources', path: '/resources' },
       { name: 'Roadmap', path: '/roadmap' },
     ],
@@ -28,7 +34,7 @@ const Footer: React.FC = () => {
       { name: 'Privacy Policy', path: '/privacy' },
       { name: 'Terms of Service', path: '/terms' },
       { name: 'Cookie Policy', path: '/cookie' },
-      { name: 'Security', href: '#' },
+      { name: 'Security', path: '/security' },
     ],
   };
 
@@ -58,38 +64,45 @@ const Footer: React.FC = () => {
             </Typography>
             <Box>
               {footerLinks.product.map((link) => (
-                <Box key={link.name} sx={{ py: 0.5 }}>
+                <ListItem key={link.name} sx={{ pb: 0, pt: 1 }}>
                   {link.path ? (
-                    <Link
-                      component={RouterLink}
+                    <RouterLink
                       to={link.path}
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{
+                      style={{
                         textDecoration: 'none',
-                        '&:hover': {
-                          textDecoration: 'underline',
-                        },
+                        color: 'inherit',
                       }}
                     >
-                      {link.name}
-                    </Link>
+                      <Link
+                        component="span"
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{
+                          cursor: 'pointer',
+                          '&:hover': {
+                            color: 'primary.main',
+                          },
+                        }}
+                      >
+                        {link.name}
+                      </Link>
+                    </RouterLink>
                   ) : (
                     <Link
                       href={link.href}
                       variant="body2"
                       color="text.secondary"
                       sx={{
-                        textDecoration: 'none',
+                        cursor: 'pointer',
                         '&:hover': {
-                          textDecoration: 'underline',
+                          color: 'primary.main',
                         },
                       }}
                     >
                       {link.name}
                     </Link>
                   )}
-                </Box>
+                </ListItem>
               ))}
             </Box>
           </Grid>
@@ -101,21 +114,45 @@ const Footer: React.FC = () => {
             </Typography>
             <Box>
               {footerLinks.company.map((link) => (
-                <Box key={link.name} sx={{ py: 0.5 }}>
-                  <Link
-                    href={link.href}
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{
-                      textDecoration: 'none',
-                      '&:hover': {
-                        textDecoration: 'underline',
-                      },
-                    }}
-                  >
-                    {link.name}
-                  </Link>
-                </Box>
+                <ListItem key={link.name} sx={{ pb: 0, pt: 1 }}>
+                  {link.path ? (
+                    <RouterLink
+                      to={link.path}
+                      style={{
+                        textDecoration: 'none',
+                        color: 'inherit',
+                      }}
+                    >
+                      <Link
+                        component="span"
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{
+                          cursor: 'pointer',
+                          '&:hover': {
+                            color: 'primary.main',
+                          },
+                        }}
+                      >
+                        {link.name}
+                      </Link>
+                    </RouterLink>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        cursor: 'pointer',
+                        '&:hover': {
+                          color: 'primary.main',
+                        },
+                      }}
+                    >
+                      {link.name}
+                    </Link>
+                  )}
+                </ListItem>
               ))}
             </Box>
           </Grid>
@@ -127,38 +164,45 @@ const Footer: React.FC = () => {
             </Typography>
             <Box>
               {footerLinks.legal.map((link) => (
-                <Box key={link.name} sx={{ py: 0.5 }}>
+                <ListItem key={link.name} sx={{ pb: 0, pt: 1 }}>
                   {link.path ? (
-                    <Link
-                      component={RouterLink}
+                    <RouterLink
                       to={link.path}
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{
+                      style={{
                         textDecoration: 'none',
-                        '&:hover': {
-                          textDecoration: 'underline',
-                        },
+                        color: 'inherit',
                       }}
                     >
-                      {link.name}
-                    </Link>
+                      <Link
+                        component="span"
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{
+                          cursor: 'pointer',
+                          '&:hover': {
+                            color: 'primary.main',
+                          },
+                        }}
+                      >
+                        {link.name}
+                      </Link>
+                    </RouterLink>
                   ) : (
                     <Link
                       href={link.href}
                       variant="body2"
                       color="text.secondary"
                       sx={{
-                        textDecoration: 'none',
+                        cursor: 'pointer',
                         '&:hover': {
-                          textDecoration: 'underline',
+                          color: 'primary.main',
                         },
                       }}
                     >
                       {link.name}
                     </Link>
                   )}
-                </Box>
+                </ListItem>
               ))}
             </Box>
           </Grid>
