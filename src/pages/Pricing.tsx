@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Grid,
@@ -31,12 +31,17 @@ import {
   AccordionSummary,
   AccordionDetails,
   Stack,
+  Alert,
+  AlertTitle,
+  Collapse,
+  IconButton,
 } from '@mui/material';
 import {
   Check as CheckIcon,
   Close as CloseIcon,
 } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import { useNavigate } from 'react-router-dom';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
@@ -182,6 +187,17 @@ const faqData = [
 function Pricing() {
   const navigate = useNavigate();
   const [isYearly, setIsYearly] = useState(false);
+  const [showBanner, setShowBanner] = useState(true);
+  const [timeLeft, setTimeLeft] = useState(14); // Days left in promotion
+
+  useEffect(() => {
+    // Simulate countdown - in production, this would be based on actual promotion end date
+    const timer = setInterval(() => {
+      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 14));
+    }, 86400000); // Update every 24 hours
+
+    return () => clearInterval(timer);
+  }, []);
 
   const handleSubscribe = (tier: string) => {
     // TODO: Implement subscription logic
@@ -190,6 +206,75 @@ function Pricing() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 8 }}>
+      {/* Free Trial Banner */}
+      <Collapse in={showBanner}>
+        <Alert
+          severity="info"
+          sx={{
+            mt: 2,
+            mb: 3,
+            backgroundColor: 'primary.light',
+            color: 'primary.contrastText',
+            '& .MuiAlert-icon': {
+              color: 'primary.contrastText',
+            },
+            borderRadius: 2,
+            boxShadow: 2,
+          }}
+          icon={<TimerOutlinedIcon />}
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => setShowBanner(false)}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+        >
+          <AlertTitle sx={{ fontWeight: 'bold' }}>
+            Special Offer: 14-Day Free Trial
+          </AlertTitle>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Typography variant="body1">
+              Try all Pro features free for 14 days. No credit card required!
+            </Typography>
+            <Box
+              sx={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                bgcolor: 'primary.main',
+                px: 2,
+                py: 0.5,
+                borderRadius: 1,
+                ml: 2,
+              }}
+            >
+              <Typography variant="body2" fontWeight="bold">
+                {timeLeft} days left
+              </Typography>
+            </Box>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              sx={{
+                bgcolor: 'common.white',
+                color: 'primary.main',
+                '&:hover': {
+                  bgcolor: 'grey.100',
+                },
+                ml: 2,
+              }}
+              onClick={() => handleSubscribe('pro')}
+            >
+              Start Free Trial
+            </Button>
+          </Box>
+        </Alert>
+      </Collapse>
+
       {/* Header */}
       <Box textAlign="center" mb={8}>
         <Typography
