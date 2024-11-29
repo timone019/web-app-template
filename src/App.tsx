@@ -35,6 +35,7 @@ import BudgetTracker from './pages/BudgetTracker';
 import FreelancerCalculator from './pages/FreelancerCalculator';
 import InvoiceGenerator from './pages/InvoiceGenerator';
 import ShoppingLists from './pages/ShoppingLists';
+import Account from './pages/Account';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
@@ -68,9 +69,10 @@ function AppContent() {
               <Route path="/cookie" element={<Cookie />} />
               <Route path="/security" element={<Security />} />
               <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/blog/:id" element={<BlogPost />} />
               <Route path="/careers" element={<Careers />} />
-              <Route path="/careers/:slug" element={<JobPosting />} />
+              <Route path="/careers/:id" element={<JobPosting />} />
+              <Route path="/account" element={<Account />} />
               <Route path="/features" element={<Features />} />
               <Route path="/budget-tracker" element={<BudgetTracker />} />
               <Route path="/freelancer-calculator" element={<FreelancerCalculator />} />
