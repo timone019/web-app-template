@@ -42,8 +42,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import { useNavigate } from 'react-router-dom';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { useAuth } from '../contexts/AuthContext';
-import { useSnackbar } from '../contexts/SnackbarContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { useSnackbar } from '../../contexts/SnackbarContext';
 
 interface PricingTier {
   title: string;
