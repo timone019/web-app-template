@@ -1,32 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from '../../contexts/SnackbarContext';
 import {
-  Container,
-  Typography,
-  Box,
-  Paper,
-  Grid,
-  TextField,
-  Button,
-  Divider,
   Avatar,
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
   IconButton,
   List,
   ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  Switch,
-  useTheme,
   ListItemButton,
+  ListItemSecondaryAction,
+  ListItemText,
+  Paper,
+  Switch,
+  TextField,
+  Typography
 } from '@mui/material';
 import {
   Edit as EditIcon,
-  Notifications as NotificationsIcon,
-  Security as SecurityIcon,
-  Payment as PaymentIcon,
   History as HistoryIcon,
+  Notifications as NotificationsIcon,
+  Payment as PaymentIcon,
+  Security as SecurityIcon,
 } from '@mui/icons-material';
-import { useSnackbar } from '../contexts/SnackbarContext';
-import { useNavigate } from 'react-router-dom';
 
 interface ProfileData {
   firstName: string;
@@ -36,7 +35,6 @@ interface ProfileData {
 }
 
 const Account = () => {
-  const theme = useTheme();
   const { showSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
@@ -100,13 +98,13 @@ const Account = () => {
                 sx={{
                   width: 80,
                   height: 80,
-                  bgcolor: theme.palette.primary.main,
+                  bgcolor: 'primary.main',
                   mr: 2,
                 }}
               >
                 {initials}
               </Avatar>
-              <Box flex={1}>
+              <Box>
                 <Typography variant="h6">{displayName}</Typography>
                 <Typography color="textSecondary">{profileData.email}</Typography>
               </Box>
@@ -181,7 +179,7 @@ const Account = () => {
               Quick Actions
             </Typography>
             <List>
-              <ListItemButton onClick={() => navigate('/security')}>
+              <ListItemButton onClick={() => navigate('/account-security')}>
                 <ListItemText primary="Security Settings" />
                 <SecurityIcon />
               </ListItemButton>

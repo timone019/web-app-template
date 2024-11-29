@@ -35,7 +35,10 @@ import BudgetTracker from './pages/BudgetTracker';
 import FreelancerCalculator from './pages/FreelancerCalculator';
 import InvoiceGenerator from './pages/InvoiceGenerator';
 import ShoppingLists from './pages/ShoppingLists';
-import Account from './pages/Account';
+import Account from './pages/account/Account';
+import AccountSecurity from './pages/account/AccountSecurity';
+import PaymentMethods from './pages/account/PaymentMethods';
+import OrderHistory from './pages/account/OrderHistory';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
@@ -77,6 +80,9 @@ function AppContent() {
               <Route path="/budget-tracker" element={<BudgetTracker />} />
               <Route path="/freelancer-calculator" element={<FreelancerCalculator />} />
               <Route path="/invoice-generator" element={<InvoiceGenerator />} />
+              <Route path="/account-security" element={<AccountSecurity />} />
+              <Route path="/payment-methods" element={<PaymentMethods />} />
+              <Route path="/order-history" element={<OrderHistory />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Box>
