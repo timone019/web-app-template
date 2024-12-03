@@ -12,7 +12,6 @@ import {
   Tabs,
   Switch,
   FormControlLabel,
-  Divider,
 } from '@mui/material';
 import {
   Edit as EditIcon,

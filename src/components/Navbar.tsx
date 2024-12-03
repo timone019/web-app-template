@@ -11,7 +11,6 @@ import {
   Button,
   Tooltip,
   MenuItem,
-  useTheme,
   Divider,
 } from '@mui/material';
 import {
@@ -54,7 +53,6 @@ const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const { darkMode, toggleDarkMode } = useCustomTheme();
-  const theme = useTheme();
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
