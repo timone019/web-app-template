@@ -1,46 +1,118 @@
-# Getting Started with Create React App
+# Modern React Web Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A feature-rich, responsive web application built with React, TypeScript, and Material UI. This application provides a comprehensive user interface with authentication, dashboard, and various utility features.
 
-## Available Scripts
+## ✨ Features
 
-In the project directory, you can run:
+- 🎨 Modern Material UI Design
+- 🔐 Complete Authentication Flow
+  - Login & Registration
+  - Password Recovery
+  - Two-Factor Authentication
+- 👤 User Account Management
+  - Profile Settings
+  - Security Settings
+  - Payment Methods
+  - Order History
+- 📊 Interactive Dashboard
+- 📱 Fully Responsive Design
+- 🔍 Search Functionality
+- 📄 Static Pages (About, Terms, Privacy)
+- 🌙 Dark/Light Theme Support
+- 🌐 Client-Side Routing
+- 📝 Form Validation
+- 🔔 Toast Notifications
 
-### `npm start`
+## 🛠️ Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **React 18** - Modern UI development
+- **TypeScript** - Type-safe code
+- **Material UI v5** - UI component library
+- **React Router v6** - Client-side routing
+- **Formik & Yup** - Form handling and validation
+- **Axios** - API requests
+- **Context API** - State management
+- **React Query** - Server state management
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 📁 Project Structure
+```
+src/
+├── components/       # Reusable UI components
+├── contexts/        # React Context providers
+├── hooks/           # Custom React hooks
+├── pages/           # Page components
+│   ├── account/     # Account-related pages
+│   ├── auth/        # Authentication pages
+│   └── dashboard/   # Dashboard components
+├── services/        # API services
+├── theme/           # Material UI theme configuration
+├── types/           # TypeScript type definitions
+└── utils/           # Utility functions
+```
 
-### `npm test`
+## 🚀 Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm start
+   ```
+4. Open [http://localhost:3000](http://localhost:3000)
 
-### `npm run build`
+## 📜 Available Scripts
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `npm start` - Start development server
+- `npm run build` - Build production bundle
+- `npm test` - Run tests
+- `npm run lint` - Run ESLint
+- `npm run format` - Format code with Prettier
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🌐 Backend Integration
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This frontend application is designed to work with a RESTful API backend. The API endpoints are configured in `src/services/api.ts`. For local development without a backend, the application uses mock data and simulated responses.
 
-### `npm run eject`
+To connect to a backend server:
+1. Configure the API base URL in `.env`:
+   ```
+   REACT_APP_API_URL=http://your-api-url
+   ```
+2. Ensure all API endpoints match your backend routes
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 🚀 Deployment
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This application is configured for deployment on GitHub Pages:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+1. Update `package.json` with your repository URL:
+   ```json
+   {
+     "homepage": "https://yourusername.github.io/repository-name"
+   }
+   ```
+2. Build and deploy:
+   ```bash
+   npm run build
+   ```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 🎨 Customization
 
-## Learn More
+### Theme
+The application theme can be customized in `src/theme/theme.ts`. It supports both light and dark modes with easy color palette modification.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Components
+All components are built with Material UI and can be customized using the theme or component-specific props.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 📝 Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License.
