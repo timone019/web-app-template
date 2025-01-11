@@ -25,9 +25,9 @@ const Footer: React.FC = () => {
       { name: 'Roadmap', path: '/roadmap' },
     ],
     company: [
-      { name: 'About Us', href: '/about' },
+      { name: 'About Us', path: '/about' },
       { name: 'Careers', path: '/careers' },
-      { name: 'Contact', href: '/contact' },
+      { name: 'Contact', path: '/contact' },
       { name: 'Blog', path: '/blog' },
     ],
     legal: [
