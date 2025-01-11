@@ -41,6 +41,7 @@ import PaymentMethods from './pages/account/PaymentMethods';
 import OrderHistory from './pages/account/OrderHistory';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { ScrollToTop } from './components/ScrollToTop';
 
 function AppContent() {
   const { darkMode } = useCustomTheme();
@@ -50,6 +51,7 @@ function AppContent() {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <CssBaseline />
         <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+          <ScrollToTop />
           <Navbar />
           <Box component="main" sx={{ flexGrow: 1 }}>
             <Routes>
